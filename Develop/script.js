@@ -2,10 +2,22 @@
 function buildScheduler(){
   const schedulerBox = document.querySelector('#schedulerBox');
   let startTime = dayjs().hour(9).minute(0);
-  const endTime = dayjs().hour(17).minute(0);
+  const endTime = dayjs().hour(17).minute(30);
+  var now = dayjs();
+  var currentHour = now.hour();
+  console.log(currentHour);
   while(startTime.isBefore(endTime)){
-
+    // console.log(startTime.getHours());
+    console.log(startTime);
     let hourOf = startTime.format('h')
+    let outerDivClass;
+    if(startTime.hour() < currentHour){
+      outerDivClass = "past";
+    } else if (startTime.hour() > currentHour){
+      outerDivClass = "future";
+    } else {
+      outerDivClass = "present";
+    }
 
     const outerDiv = document.createElement('div');
 
@@ -14,7 +26,7 @@ function buildScheduler(){
     const button = document.createElement('button');
     const saveI = document.createElement('i');
 
-    outerDiv.classList.add('row', 'time-block', 'past')
+    outerDiv.classList.add('row', 'time-block', `${outerDivClass}`);
     outerDiv.id = `hour-${hourOf}`;
 
     innerDiv.classList.add('col-2', 'col-md-1', 'hour', 'text-center', 'py-3');
@@ -36,7 +48,7 @@ function buildScheduler(){
 
  
     schedulerBox.appendChild(outerDiv);
-    console.log(startTime.format('h A'));
+    // console.log(startTime.format('h A'));
     startTime = startTime.add(1, 'hour');
 
   }
