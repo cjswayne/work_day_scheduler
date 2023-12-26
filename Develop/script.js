@@ -1,20 +1,33 @@
-
+// fxn to build html of time blocks
 function buildScheduler(now){
   const schedulerBox = document.querySelector('#schedulerBox');
   let startTime = dayjs().hour(9).minute(0);
   const endTime = dayjs().hour(17).minute(30);
 
-  // need to check if object has been created or not
+  let obj = localStorage.getItem('eventTextObj');
+  let objExists = false;
 
-  let eventTextStorage = localStorage.getItem('eventTextObj') || [];
-  console.log(eventTextStorage);
-  let eventTextObj = JSON.parse(eventTextStorage);
-
+  if(obj){
+    console.log('SAME OBJECT');
+    objExists = true;
+    eventTextStorage = JSON.parse(obj);
+  } else {
+    objExists = false;
+    console.log('NEW OBJECT');
+    eventTextStorage = [];
+    //  localStorage.setItem('eventTextObj', JSON.stringify(data));
+  }
 
   var currentHour = now.hour();
-  console.log(currentHour);
+  let hourOf = 0;
   while(startTime.isBefore(endTime)){
-    let hourOf = startTime.format('h')
+    
+    if(!objExists){
+      newTextEntry = {"hour":hourOf, "eventText":""};
+      eventTextStorage.push(newTextEntry);
+    } else {
+      eventEntry = eventTextStorage[hourOf];
+    }
     let outerDivClass;
 
     if(startTime.hour() < currentHour){
@@ -24,9 +37,7 @@ function buildScheduler(now){
     } else {
       outerDivClass = "present";
     }
-
-    let eventTextEntry = {"hour":hourOf, "eventText":""}
-
+    
     const outerDiv = document.createElement('div');
 
     const innerDiv = document.createElement('div');
@@ -40,56 +51,77 @@ function buildScheduler(now){
     innerDiv.innerText = startTime.format('h A');
     outerDiv.appendChild(innerDiv);
 
-    // need to add in text content from localstorage
     textarea.classList.add('col-8', 'col-md-10', 'description');
-    textarea.setAttribute("rows", "3");
-    textarea.id = `textarea_hour-${hourOf}`
+    textarea.setAttribute("rows", "2");
+    textarea.id = `textarea_hour${hourOf}`;
+
+    let eventText = "";
+    if(objExists){
+      eventText = eventEntry.eventText;
+    }
+    console.log(eventText);
+    textarea.textContent = eventText;
+
     outerDiv.appendChild(textarea);
 
     button.classList.add('btn', 'saveBtn', 'col-2', 'col-md-1');
     button.setAttribute('aria-label', 'save');
-    button.id = `hour-${hourOf}`
+    button.id = `hour${hourOf}`
     button.addEventListener("click", saveEvent());
-
-
 
     saveI.classList.add('fas', 'fa-save');
     saveI.setAttribute('aria-hidden', 'true');
     button.appendChild(saveI);
     outerDiv.appendChild(button);
-
  
     schedulerBox.appendChild(outerDiv);
     startTime = startTime.add(1, 'hour');
-
+    hourOf++;
   }
-}
 
+  if(!objExists){
+    localStorage.setItem('eventTextObj', JSON.stringify(eventTextStorage));
+  }
+  let data = localStorage.getItem('eventTextObj');
+  console.log(JSON.parse(data));
+}
+// fxn to set day
 function setDayText(now){
   const dayText = document.querySelector('#currentDay');
   dayText.innerText = now.format('dddd MM/DD/YYYY');
 }
-
+// fxn to save textarea entry on save button click
 function saveEvent(){
   return function(event){
-    // the text in the textarea
+    let eventTextStorage = localStorage.getItem('eventTextObj');
+    eventTextStorage = JSON.parse(eventTextStorage)
+    
     let buttonHour = event;
     let buttonHourID = buttonHour.srcElement.id;
-    let textareaID = `#textarea_${buttonHourID}`
-    console.log(textareaID);
 
+    let hourOf = parseInt(buttonHourID.replace('hour', ''), 10);
+    console.log(hourOf);
+
+
+
+    let textareaID = `#textarea_${buttonHourID}`;
     let textarea = document.querySelector(textareaID);
-    console.log(textarea.value);
+    let eventEntry = eventTextStorage[hourOf];
 
 
-    let eventText;
+    console.log(eventEntry);
 
-    let eventTextStorage = localStorage.getItem('eventTextObj');
-    let eventTextObj = JSON.parse(eventTextStorage);
+    let eventTextValue = textarea.value;
+    // console.log(eventTextValue)
+    eventEntry.eventText = eventTextValue;
+
+    eventTextStorage[hourOf] = eventEntry;
 
 
+    // console.log();
+    localStorage.setItem('eventTextObj', JSON.stringify(eventTextStorage));
 
-    // localStorage.setItem("highscoresList", JSON.stringify(highscores));
+
   }
 }
 
