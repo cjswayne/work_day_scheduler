@@ -1,6 +1,6 @@
 /* MAIN SECTIONS AND GENERAL */
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 16px;
 }
 
@@ -12,19 +12,31 @@ textarea {
   padding: 10px;
 }
 
-header{
-  padding:3rem 3rem .2rem 3rem;
+header {
+  padding: 3rem 3rem 0.2rem 3rem;
 }
 
-.scheduler-box{
-  margin:0rem 3rem 3rem 3rem;
+.scheduler-box {
+  margin: 0rem 3rem 3rem 3rem;
+}
+
+.hidden {
+  opacity: 0;
+  transition: 0.3s;
+  position: absolute;
+}
+
+.unhidden {
+  opacity: 1;
+  height: 0px;
+  position: absolute;
 }
 
 /* TIME BLOCK */
 .time-block {
   border-radius: 15px;
-  margin:10px 0;
-  border:1px solid #d3d3d3;
+  margin: 10px 0;
+  border: 1px solid #d3d3d3;
 }
 .past,
 .past .hour {
@@ -35,13 +47,13 @@ header{
   background-color: #ff6961;
 }
 .future,
-.future .hour{
+.future .hour {
   background-color: #77dd77;
 }
 .hour {
   color: #000000;
   border-radius: 15px;
-  display:flex;
+  display: flex;
   align-items: center;
   align-content: center;
   justify-content: center;
@@ -49,7 +61,7 @@ header{
 }
 .description {
   white-space: pre-wrap;
-  padding-top:32px;
+  padding-top: 32px;
 }
 
 .saveBtn {
@@ -64,6 +76,5 @@ header{
 }
 
 .saveBtn i {
-pointer-events: none;
+  pointer-events: none;
 }
-
