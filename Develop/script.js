@@ -3,15 +3,20 @@ function buildScheduler(now){
   const schedulerBox = document.querySelector('#schedulerBox');
   let startTime = dayjs().hour(9).minute(0);
   const endTime = dayjs().hour(17).minute(30);
-  // var now = dayjs();
+
+  // need to check if object has been created or not
+
+  let eventTextStorage = localStorage.getItem('eventTextObj') || [];
+  console.log(eventTextStorage);
+  let eventTextObj = JSON.parse(eventTextStorage);
+
 
   var currentHour = now.hour();
   console.log(currentHour);
   while(startTime.isBefore(endTime)){
-    // console.log(startTime.getHours());
-    console.log(startTime);
     let hourOf = startTime.format('h')
     let outerDivClass;
+
     if(startTime.hour() < currentHour){
       outerDivClass = "past";
     } else if (startTime.hour() > currentHour){
@@ -19,6 +24,8 @@ function buildScheduler(now){
     } else {
       outerDivClass = "present";
     }
+
+    let eventTextEntry = {"hour":hourOf, "eventText":""}
 
     const outerDiv = document.createElement('div');
 
@@ -28,19 +35,23 @@ function buildScheduler(now){
     const saveI = document.createElement('i');
 
     outerDiv.classList.add('row', 'time-block', `${outerDivClass}`);
-    outerDiv.id = `hour-${hourOf}`;
 
     innerDiv.classList.add('col-2', 'col-md-1', 'hour', 'text-center', 'py-3');
     innerDiv.innerText = startTime.format('h A');
     outerDiv.appendChild(innerDiv);
 
-
+    // need to add in text content from localstorage
     textarea.classList.add('col-8', 'col-md-10', 'description');
     textarea.setAttribute("rows", "3");
+    textarea.id = `textarea_hour-${hourOf}`
     outerDiv.appendChild(textarea);
 
     button.classList.add('btn', 'saveBtn', 'col-2', 'col-md-1');
     button.setAttribute('aria-label', 'save');
+    button.id = `hour-${hourOf}`
+    button.addEventListener("click", saveEvent());
+
+
 
     saveI.classList.add('fas', 'fa-save');
     saveI.setAttribute('aria-hidden', 'true');
@@ -49,16 +60,37 @@ function buildScheduler(now){
 
  
     schedulerBox.appendChild(outerDiv);
-    // console.log(startTime.format('h A'));
     startTime = startTime.add(1, 'hour');
 
   }
-  console.log(startTime);
 }
 
 function setDayText(now){
   const dayText = document.querySelector('#currentDay');
   dayText.innerText = now.format('dddd MM/DD/YYYY');
+}
+
+function saveEvent(){
+  return function(event){
+    // the text in the textarea
+    let buttonHour = event;
+    let buttonHourID = buttonHour.srcElement.id;
+    let textareaID = `#textarea_${buttonHourID}`
+    console.log(textareaID);
+
+    let textarea = document.querySelector(textareaID);
+    console.log(textarea.value);
+
+
+    let eventText;
+
+    let eventTextStorage = localStorage.getItem('eventTextObj');
+    let eventTextObj = JSON.parse(eventTextStorage);
+
+
+
+    // localStorage.setItem("highscoresList", JSON.stringify(highscores));
+  }
 }
 
 
@@ -69,8 +101,11 @@ function setDayText(now){
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
+  // const schedulerBox = document.querySelector('#schedulerBox');
+  // schedulerBox.addEventListener('click', saveEvent()); 
   setDayText(dayjs());
   buildScheduler(dayjs());
+
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
