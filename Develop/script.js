@@ -1,7 +1,57 @@
+
+function buildScheduler(){
+  const schedulerBox = document.querySelector('#schedulerBox');
+  let startTime = dayjs().hour(9).minute(0);
+  const endTime = dayjs().hour(17).minute(0);
+  while(startTime.isBefore(endTime)){
+
+    let hourOf = startTime.format('h')
+
+    const outerDiv = document.createElement('div');
+
+    const innerDiv = document.createElement('div');
+    const textarea = document.createElement('textarea');
+    const button = document.createElement('button');
+    const saveI = document.createElement('i');
+
+    outerDiv.classList.add('row', 'time-block', 'past')
+    outerDiv.id = `hour-${hourOf}`;
+
+    innerDiv.classList.add('col-2', 'col-md-1', 'hour', 'text-center', 'py-3');
+    innerDiv.innerText = startTime.format('h A');
+    outerDiv.appendChild(innerDiv);
+
+
+    textarea.classList.add('col-8', 'col-md-10', 'description');
+    textarea.setAttribute("rows", "3");
+    outerDiv.appendChild(textarea);
+
+    button.classList.add('btn', 'saveBtn', 'col-2', 'col-md-1');
+    button.setAttribute('aria-label', 'save');
+
+    saveI.classList.add('fas', 'fa-save');
+    saveI.setAttribute('aria-hidden', 'true');
+    button.appendChild(saveI);
+    outerDiv.appendChild(button);
+
+ 
+    schedulerBox.appendChild(outerDiv);
+    console.log(startTime.format('h A'));
+    startTime = startTime.add(1, 'hour');
+
+  }
+  console.log(startTime);
+}
+
+
+
+
+
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
+  buildScheduler()
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -21,3 +71,5 @@ $(function () {
   //
   // TODO: Add code to display the current date in the header of the page.
 });
+
+
