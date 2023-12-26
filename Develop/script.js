@@ -1,9 +1,10 @@
 
-function buildScheduler(){
+function buildScheduler(now){
   const schedulerBox = document.querySelector('#schedulerBox');
   let startTime = dayjs().hour(9).minute(0);
   const endTime = dayjs().hour(17).minute(30);
-  var now = dayjs();
+  // var now = dayjs();
+
   var currentHour = now.hour();
   console.log(currentHour);
   while(startTime.isBefore(endTime)){
@@ -55,6 +56,11 @@ function buildScheduler(){
   console.log(startTime);
 }
 
+function setDayText(now){
+  const dayText = document.querySelector('#currentDay');
+  dayText.innerText = now.format('dddd MM/DD/YYYY');
+}
+
 
 
 
@@ -63,7 +69,8 @@ function buildScheduler(){
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
-  buildScheduler()
+  setDayText(dayjs());
+  buildScheduler(dayjs());
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
