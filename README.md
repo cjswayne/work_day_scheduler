@@ -1,12 +1,12 @@
 # work_day_scheduler
 
 ## Description
-In this project I refactored code to make a functional work day scheduler. The application shows which hours have past, which hour it is, and future colors by color, it also has the ability to save data to the browser's local storage, allowing the browser to be reloaded or closed without the loss of your schedule.
+In this project I refactored code to make a functional work day scheduler. The application shows which hours have past, which hour it is, and future hours by color, it also has the ability to save data to the browser's local storage, allowing the browser to be reloaded or closed without the loss of your schedule.
 
 
 ## Repository 
 
-Link to deployed code: []()
+Link to deployed code: [https://cjswayne.github.io/work_day_scheduler/](https://cjswayne.github.io/work_day_scheduler/)
 
 ## Technoligies
 - This application used javascript, css, and html5
