@@ -1,8 +1,8 @@
 // fxn to build html of time blocks and add time block fxnality
 function buildScheduler(now) {
   const schedulerBox = document.querySelector('#schedulerBox');
-  let startTime = dayjs().hour(9).minute(0);
-  const endTime = dayjs().hour(17).minute(30);
+  let startTime = dayjs().hour(14).minute(0);
+  const endTime = dayjs().hour(24).minute(30);
 
   let obj = localStorage.getItem('eventTextObj');
   let objExists = false;
@@ -23,13 +23,13 @@ function buildScheduler(now) {
     let outerDivClass;
     let eventText = "";
 
-    if (startTime.hour() < currentHour) {
-      outerDivClass = "past";
-    } else if (startTime.hour() > currentHour) {
-      outerDivClass = "future";
-    } else {
-      outerDivClass = "present";
-    }
+    // if (startTime.hour() < currentHour) {
+    //   outerDivClass = "past";
+    // } else if (startTime.hour() > currentHour) {
+    //   outerDivClass = "future";
+    // } else {
+    //   outerDivClass = "present";
+    // }
     if (!objExists) {
       newTextEntry = { "hour": hourOf, "eventText": "" };
       eventTextStorage.push(newTextEntry);
@@ -44,7 +44,7 @@ function buildScheduler(now) {
     const button = document.createElement('button');
     const saveI = document.createElement('i');
 
-    outerDiv.classList.add('row', 'time-block', `${outerDivClass}`);
+    outerDiv.classList.add('row', 'time-block', `${(startTime.hour() < currentHour) ? 'past' : (startTime.hour() > currentHour) ? 'future' : 'present'}`);
 
     innerDiv.classList.add('col-2', 'col-md-1', 'hour', 'text-center', 'py-3');
     innerDiv.innerText = startTime.format('h A');
